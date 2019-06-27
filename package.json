@@ -1,0 +1,35 @@
+{
+  "name": "hello-next",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server/main.js",
+  "scripts": {
+    "dev": "node server/main.js | pino-pretty -i hostname,pid,req,res,id,responseTime,startDate -t",
+    "build": "next build client",
+    "start": "NODE_ENV=production node server/main.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-boost": "^0.4.3",
+    "apollo-server-koa": "^2.6.6",
+    "graphql": "^14.3.1",
+    "isomorphic-unfetch": "^3.0.0",
+    "koa": "^2.7.0",
+    "koa-req-logger": "^1.5.2",
+    "koa-router": "^7.4.0",
+    "next": "^8.1.0",
+    "next-compose-plugins": "^2.2.0",
+    "next-offline": "^4.0.2",
+    "next-pino": "0.0.1",
+    "pino": "^5.12.6",
+    "react": "^16.8.6",
+    "react-apollo-hooks": "^0.4.5",
+    "react-dom": "^16.8.6"
+  },
+  "devDependencies": {
+    "pino-pretty": "^3.2.0"
+  }
+}
