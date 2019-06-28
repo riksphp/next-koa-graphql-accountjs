@@ -5,6 +5,7 @@ const withTypescript = require('@zeit/next-typescript');
 const withCSS = require("@zeit/next-css");
 
 const nextConfig = {
+  distDir: 'build',
   webpack(config, options) {
     config.module.rules.push({
       test: /\.(eot|woff|woff2|ttf|svg|png|jpg|gif)$/,

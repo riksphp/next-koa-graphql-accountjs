@@ -2,8 +2,9 @@ import { DefaultAppIProps, NextAppContext } from "next/app";
 import React from "react";
 import initApollo from "./initApollo";
 import Head from "next/head";
-import { getDataFromTree } from "react-apollo";
 import { NormalizedCacheObject } from "apollo-boost";
+import { getMarkupFromTree } from "react-apollo-hooks";
+import { renderToString } from "react-dom/server";
 
 const isBrowser = typeof window !== "undefined";
 
@@ -26,20 +27,23 @@ export default (App: any) => {
             const apollo = initApollo.getApolloClient({});
             if (!isBrowser) {
                 try {
-                // Run all GraphQL queries
-                await getDataFromTree(
-                    <App
-                    {...appProps}
-                    Component={Component}
-                    router={router}
-                    apolloClient={apollo}
-                    />
-                );
+                    // Run all GraphQL queries
+                    await getMarkupFromTree({
+                        renderFunction: renderToString,
+                        tree: (
+                            <App
+                                {...appProps}
+                                Component={Component}
+                                router={router}
+                                apolloClient={apollo}
+                            />
+                        )
+                    });
                 } catch (error) {
-                // Prevent Apollo Client GraphQL errors from crashing SSR.
-                // Handle them in components via the data.error prop:
-                // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
-                console.error("Error while running `getDataFromTree`", error);
+                    // Prevent Apollo Client GraphQL errors from crashing SSR.
+                    // Handle them in components via the data.error prop:
+                    // https://www.apollographql.com/docs/react/api/react-apollo.html#graphql-query-data-error
+                    console.error("Error while running `getMarkupFromTree`", error);
                 }
 
                 // getDataFromTree does not call componentWillUnmount

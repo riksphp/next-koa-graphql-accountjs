@@ -32,7 +32,7 @@ import {
   
       const httpLink = new HttpLink({
         credentials: "same-origin", // Additional fetch() options like `credentials` or `headers`
-        uri: "http://localhost:3000/graphql" // Server URL (must be absolute)
+        uri: process.env.GRAPHQL_SERVER || "http://localhost:3000/graphql" // Server URL (must be absolute)
       });
   
       const stateLink = withClientState({

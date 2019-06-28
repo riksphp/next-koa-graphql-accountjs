@@ -12,10 +12,18 @@ import UserResolver from './modules/user/UserResolver'
 import { authChecker } from './modules/user/authChecker'
 import { setUpAccounts } from './modules/user/accounts'
 import { TypegooseMiddleware } from "./middleware/typegoose";
+import cors from 'kcors';
+import bodyParser from 'koa-bodyparser';
+import helmet from 'koa-helmet';
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const port = parseInt(process.env.port || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
+const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ops-master-web";
 
+console.log("****", dev);
 // Initialize nextjs
 const app = next({ dir: "./client", dev });
 const handle = app.getRequestHandler();
@@ -49,12 +57,22 @@ const startServer = async () => {
             }
         });
 
+        server.use(cors());
+        server.use(helmet());
+        server.use(bodyParser());
+
+        console.log(`[ops-master-web] Connecting to MongoDB at ${mongoURI}]`);
         const mongooseConnection = await connect(
-            process.env.MONGODB_URI || "mongodb://localhost:27017/ops-master-web",
+            mongoURI,
             { useNewUrlParser: true }
         );
+        console.log(`[ops-master-web] Connection to MongoDB at ${mongoURI}] successful`);
+
+
+        console.log(`[ops-master-web] Setting up account-js authentication`);
         const { accountsGraphQL } = setUpAccounts(mongooseConnection.connection);
 
+        console.log(`[ops-master-web] Building schemas for graphql.`);
         const typeGraphqlSchema = await buildSchema({
             resolvers: [UserResolver],
             globalMiddlewares: [TypegooseMiddleware],
@@ -64,7 +82,6 @@ const startServer = async () => {
             authChecker,
         });
 
-        // @ts-ignore
         const schema = makeExecutableSchema({
             typeDefs: mergeTypeDefs([typeDefs, accountsGraphQL.typeDefs]),
             resolvers: mergeResolvers([resolvers, accountsGraphQL.resolvers]),
@@ -74,6 +91,7 @@ const startServer = async () => {
             },
         });
 
+        console.log(`[ops-master-web] Initalising Apollo graphQLServer.`);
         const graphQLServer = new ApolloServer({
             schema: mergeSchemas({
                 schemas: [schema, typeGraphqlSchema],
@@ -85,9 +103,13 @@ const startServer = async () => {
             },
             playground
         });
+
         graphQLServer.applyMiddleware({ app: server });
 
+        console.log(`[ops-master-web] Preparing Nextjs app.`);
         await app.prepare();
+
+        console.log(`[ops-master-web] Prepearing routes for KOA server.`);
 
         router.get("/p/:id", async ctx => {
             const actualPage = "/post";
@@ -122,7 +144,7 @@ const startServer = async () => {
         server.use(logger.getMiddleware());
         server.use(router.routes());
 
-        await server.listen({ port  })
+        await server.listen({ port  });
         console.log(`🚀 Server ready at localhost:${port}`)
         console.log(`🚀 GraphQL on http://localhost:${port}${graphQLServer.graphqlPath}`);
     } catch (e) {

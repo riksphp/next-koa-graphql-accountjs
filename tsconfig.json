@@ -19,18 +19,18 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "importHelpers": true,
-    "lib": ["dom", "es5", "es6", "esnext.asynciterable", "es7", "es2017"],
-    "module": "esnext",
+    "lib": ["dom", "es5", "es6", "esnext.asynciterable", "es7", "es2017", "es2015"],
+    "module": "commonjs",
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "resolveJsonModule": true,
     "strictNullChecks": true,
-    "target": "esnext",
+    "target": "es5",
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
     "noFallthroughCasesInSwitch": true
   },
   "include": ["**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules", "lib"]
+  "exclude": ["node_modules"]
 }
