@@ -1,5 +1,4 @@
 import App, { Container, DefaultAppIProps } from "next/app";
-import Head from "next/head";
 import withApolloClient from "../lib/with-apollo-client";
 import { ApolloProvider as ApolloHooksProvider } from "react-apollo-hooks";
 
@@ -12,17 +11,11 @@ class opsMasterApp extends App<ApolloAppIProps> {
         const { Component, pageProps, apolloClient } = this.props;
 
         return (
-            <>
-                <Head>
-                    <link rel="icon" href="data:;base64,iVBORw0KGgo=" />  
-                </Head>
-
-                <Container>
-                    <ApolloHooksProvider client={apolloClient}>
-                        <Component {...pageProps} />
-                    </ApolloHooksProvider>
-                </Container>
-            </>
+            <Container>
+                <ApolloHooksProvider client={apolloClient}>
+                    <Component {...pageProps} />
+                </ApolloHooksProvider>
+            </Container>
         );
     }
 }

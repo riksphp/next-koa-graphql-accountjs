@@ -4,7 +4,7 @@
   "description": "This app helps sales manager and agents to keep track of order related data points.",
   "main": "lib/index.js",
   "scripts": {
-    "dev": "NODE_ENV=development nodemon -w src -x ts-node server/src/index.ts | pino-pretty -i hostname,pid,req,res,id,responseTime,startDate -t",
+    "dev": "NODE_ENV=development nodemon --watch 'server/**/*' -e ts,tsx --exec ts-node ./server/index.ts",
     "build": "next build client",
     "start": "NODE_ENV=production node server/index.ts",
     "test": "echo \"Error: no test specified\" && exit 1"

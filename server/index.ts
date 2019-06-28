@@ -8,10 +8,10 @@ import 'reflect-metadata'
 import { connect } from 'mongoose'
 import { buildSchema } from 'type-graphql'
 import { mergeResolvers, mergeTypeDefs, mergeSchemas } from 'graphql-toolkit'
-import UserResolver from './modules/user/UserResolver'
-import { authChecker } from './modules/user/authChecker'
-import { setUpAccounts } from './modules/user/accounts'
-import { TypegooseMiddleware } from "./middleware/typegoose";
+import UserResolver from './src/modules/user/UserResolver'
+import { authChecker } from './src/modules/user/authChecker'
+import { setUpAccounts } from './src/modules/user/accounts'
+import { TypegooseMiddleware } from "./src/middleware/typegoose";
 import cors from 'kcors';
 import bodyParser from 'koa-bodyparser';
 import helmet from 'koa-helmet';
@@ -23,7 +23,6 @@ const port = parseInt(process.env.port || "3000", 10);
 const dev = process.env.NODE_ENV !== "production";
 const mongoURI = process.env.MONGODB_URI || "mongodb://localhost:27017/ops-master-web";
 
-console.log("****", dev);
 // Initialize nextjs
 const app = next({ dir: "./client", dev });
 const handle = app.getRequestHandler();

@@ -16,7 +16,8 @@ const nextConfig = {
           name: '[name].[ext]'
         }
       }
-    })
+    });
+    return config;
   }
 };
 
