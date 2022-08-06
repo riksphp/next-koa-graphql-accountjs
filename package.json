@@ -40,7 +40,7 @@
     "koa-req-logger": "^1.5.2",
     "koa-router": "^7.4.0",
     "lodash": "^4.17.11",
-    "mongoose": "^5.6.1",
+    "mongoose": "^5.7.5",
     "next": "^8.1.0",
     "next-compose-plugins": "^2.2.0",
     "next-offline": "^4.0.2",
